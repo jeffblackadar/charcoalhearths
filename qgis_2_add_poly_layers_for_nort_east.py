@@ -11,6 +11,14 @@ vlayer = iface.addVectorLayer(path_to_layer, "Charcoal Hearths layer", "ogr")
 if not vlayer:
     print("Layer failed to load!")
 
+# State Game Lands
+path_to_layer = "/home/student/charcoal_hearth_hill/state_game_lands/PGC_StateGamelan2018 WGS84_UTMzone18N.shp"
+
+vlayer = iface.addVectorLayer(path_to_layer, "State Game Lands Boundaries layer", "ogr")
+if not vlayer:
+    print("Layer failed to load!")
+
+
 report=""
 import csv
 
