@@ -5,7 +5,7 @@ from qgis.core import *
 import qgis.utils
 
 # get the path to the shapefile e.g. /home/project/data/ports.shp
-path_to_layer = "/storage/images/charcoal_hearth_hill/downloads/Weston_Uploads/Shapefiles_5-20-2020/Charcoal-Hearths.shp"
+path_to_layer = "/home/student/charcoalhearths/data_known_points/Charcoal Hearths_8-11-2020_bpc.shp"
    
 vlayer = iface.addVectorLayer(path_to_layer, "Charcoal Hearths layer", "ogr")
 if not vlayer:
