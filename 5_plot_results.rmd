@@ -1,0 +1,132 @@
+---
+title: Results of RCNN model to Detect Charcoal Hearths. 100 randomly selected, manually scored images.
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+---
+
+This is a notebook of results for selected models to analyse which one will be selected as the best.
+ 
+
+
+```{r}
+
+# Formulas from Carleton University DATA5000 lecture, Dr. James Green, Pattern Clafficiation in the Presence of Class Imbalance
+graph_result <- function(cfg_name, object_type, sample_type) {
+  library("ggplot2")
+  library("ggthemes")
+  
+  if(sample_type == ""){
+    sample_100 = "_100"
+    subtitle = "(all)"
+  }else{
+    sample_100 = ""
+    subtitle = "(just training)"
+  }
+    
+  image_prediction_folder <-
+  paste0(
+  '/home/student/',object_type,'/predictions/',
+  cfg_name,'/unknown', sample_100, sample_type, '/edited/'
+  )
+  
+  sample_file_name <- paste0(image_prediction_folder, "results_100_random_images", sample_type, "_", cfg_name, ".csv")
+  print(sample_file_name)
+  
+  results <-
+  read.table(
+  sample_file_name,
+  header = TRUE,
+  sep = ",",
+  dec = "."
+  )
+  results_df <- data.frame(results)
+  
+  g1p <- ggplot(results_df, aes(min_score)) +
+  geom_line(aes(y = gt_obj_pres_pos , colour = "Ground Truth: Present"),
+  linetype = 2) +
+  geom_line(aes(y = tp , colour = "Prediction: TP")) +
+  geom_line(aes(y = fp , colour = "Prediction: FP")) +
+  theme_igray() +
+  ggtitle(paste0(object_type," Present in Image. ",subtitle," Model: ", cfg_name)) +
+  xlab("Minimum Prediction Confidence Score Used") +
+  ylab("Number of Occurences")+
+  coord_cartesian(ylim=c(0,100))
+  
+  g1n <- ggplot(results_df, aes(min_score)) +
+  geom_line(aes(y = gt_obj_pres_neg , colour = "Ground Truth: Not Present"),
+  linetype = 2) +
+  geom_line(aes(y = tn , colour = "Prediction: TN")) +
+  geom_line(aes(y = fn , colour = "Prediction: FN")) +
+  theme_igray() +
+  ggtitle(paste0(object_type," Not Present in Image. ",subtitle," Model: ", cfg_name)) +
+  xlab("Minimum Prediction Confidence Score Used") +
+  ylab("Number of Occurences")+
+  coord_cartesian(ylim=c(0,100))
+
+  
+  g2 <- ggplot(results_df, aes(min_score)) +
+  geom_line(aes(y = tp_box , colour = "Prediction Boxes: True Positive (TP)")) +
+  geom_line(aes(y = fp_box , colour = "Prediction Boxes: False Positive (FP)")) + theme_minimal() +
+  theme_igray() +
+  ggtitle(paste0("Prediction Regions, True vs. False Positives. ",subtitle," Model: ", cfg_name)) +
+  xlab("Minimum Prediction Confidence Score Used") +
+  ylab("Number of Occurences")+
+  expand_limits(y=0)+
+  scale_y_continuous(expand=c(0,0))
+  
+  print(g1p)
+  
+  print(g1n)
+  
+  print(g2)
+  
+  results_df <- within(results_df, accuracy <- ((tp + tn) / (tp + tn + fp +
+  fn)))
+  results_df <- within(results_df, sn <- ((tp) / (tp + fn)))
+  results_df <- within(results_df, sp <- ((tn) / (tn + fp)))
+  results_df <- within(results_df, ppv <- ((tp) / (tp + fp)))
+  results_df <- within(results_df, npv <- ((tn) / (tn + fn)))
+  print(results_df)
+  g3 <- ggplot(results_df, aes(min_score)) +
+  geom_line(aes(y = accuracy , colour = "Accuracy"), linetype=2) +
+  geom_line(aes(y = sn , colour = "Sensitivity/Recall/True Positive Rate")) +
+  geom_line(aes(y = sp , colour = "Specificity")) +
+  theme_igray() +
+  ggtitle(paste0("Sensitivity and Specificity. ",subtitle," Model: ", cfg_name)) +
+  xlab("Minimum Prediction Confidence Score Used") +
+  ylab("% Accuracy")+
+  coord_cartesian(ylim=c(0,1))
+  
+  print(g3)
+  
+  g4 <- ggplot(results_df, aes(min_score)) +
+  geom_line(aes(y = accuracy , colour = "Accuracy"), linetype=2) +
+  geom_line(aes(y = ppv , colour =  "Positive Predictive Value")) +
+  geom_line(aes(y = npv , colour = "Negative Predictive Value")) +
+  theme_igray() +
+  ggtitle(paste0("Predictive Value. ",subtitle," Model: ", cfg_name)) +
+  xlab("Minimum Prediction Confidence Score Used") +
+  ylab("% Accuracy")+
+  coord_cartesian(ylim=c(0,1))
+
+  
+  print(g4)
+  
+}
+```
+
+# charcoal_hearth_hill
+# Model cfg20200826T2315
+## Epochs = 16
+
+```{r}
+cfg_name <- 'cfg20200826T2315'
+object_type <- 'charcoal_hearth_hill'
+graph_result(cfg_name, object_type, "_training")
+
+graph_result(cfg_name, object_type, "")
+
+```
