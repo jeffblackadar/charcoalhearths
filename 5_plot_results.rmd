@@ -13,7 +13,7 @@ This is a notebook of results for selected models to analyse which one will be s
 
 ```{r}
 
-# Formulas from Carleton University DATA5000 lecture, Dr. James Green, Pattern Clafficiation in the Presence of Class Imbalance
+# Formulas from Carleton University DATA5000 lecture, Dr. James Green, Pattern Classification in the Presence of Class Imbalance
 graph_result <- function(cfg_name, object_type, sample_type) {
   library("ggplot2")
   library("ggthemes")
