@@ -1,3 +1,6 @@
+For additional
+information, please see https://zenodo.org/deposit/4593767
+
 # charcoalhearths
 Work with geotifs to detect charcoal hearths
 
