@@ -3,7 +3,6 @@ This is a repository of programs for deep learning object detection using Mask R
 For additional information, please see https://zenodo.org/deposit/4593788
 
 # Notes on process
-Work with geotifs to detect charcoal hearths
 
 Geotifs images are searched for objects resembling charcoal hearths.
 To prepare of searching, download the files and split them into uniform sized rectangles.
