@@ -1,7 +1,8 @@
-For additional
-information, please see https://zenodo.org/deposit/4593767
+This is a repository of programs to for deep learning object detection using Mask R-CNN. This project detects images of relict charcoal hearths in LiDAR images of Pennsylvania.
 
-# charcoalhearths
+For additional information, please see https://zenodo.org/deposit/4593788
+
+# Notes on process
 Work with geotifs to detect charcoal hearths
 
 Geotifs images are searched for objects resembling charcoal hearths.
